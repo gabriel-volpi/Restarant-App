@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/AULINHAS GUSTAVO/ListChronometer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/AULINHAS GUSTAVO/ListChronometer/ListChronometer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/AULINHAS GUSTAVO/testeAndroid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/AULINHAS GUSTAVO/views-widgets-samples" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/DiceRoller" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/Guess It" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/MarsRealEstate" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/aboutMe" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/andfun-kotlin-gdg-finder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/android-databinding" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/dessert-pusher" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/dev_bytes" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Cursos/Curso_Android/sleepTracker - Recycler View" vcs="Git" />
+  </component>
+</project>
