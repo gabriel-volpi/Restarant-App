@@ -3,9 +3,11 @@ package com.example.restaurantapptheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,6 +18,11 @@ class RestaurantsViewModel(
     private var restInterface: RestaurantsApiService
 
     val state = mutableStateOf(emptyList<Restaurant>())
+
+    private val errorHandler = CoroutineExceptionHandler { _,exception ->
+        exception.printStackTrace()
+    }
+
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
@@ -28,28 +35,15 @@ class RestaurantsViewModel(
         restInterface = retrofit.create(
             RestaurantsApiService::class.java
         )
+        getRestaurants()
     }
 
-    //ao usar o getRestaurants.execute()... o app faz a chamada na main thread, o que n é permitido, por isso usar o .enqueue dessa forma
-    fun getRestaurants() {
-        restInterface.getRestaurants().enqueue(
 
-            object : Callback<List<Restaurant>> {
-
-                override fun onResponse(
-                    call: Call<List<Restaurant>>,
-                    response: Response<List<Restaurant>>
-                ) {
-                    response.body()?.let { restaurants ->
-                        state.value = restaurants.restoreSelections()
-                    }
-                }
-
-                override fun onFailure(call: Call<List<Restaurant>>, t: Throwable) {
-                    t.printStackTrace()
-                }
-            }
-        )
+    private fun getRestaurants() {
+        viewModelScope.launch(errorHandler) {
+            val restaurants = getRemoteRestaurants()
+            state.value = restaurants.restoreSelections()
+        }
     }
 
     fun toggleFavorite(id: Int) {
@@ -83,5 +77,11 @@ class RestaurantsViewModel(
         return restaurantMap.values.toList()
         }
         return this
+    }
+
+    private suspend fun getRemoteRestaurants() : List<Restaurant> {
+        return withContext(Dispatchers.IO) {
+            restInterface.getRestaurants()
+        }
     }
 }
