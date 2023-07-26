@@ -59,6 +59,9 @@ class RestaurantsViewModel(
         restaurants[itemIndex] = item.copy(isFavorite = !item.isFavorite)
         storeSelection(restaurants[itemIndex])
         state.value = restaurants
+        viewModelScope.launch {
+            toggleFavoriteRestaurant(id, item.isFavorite)
+        }
     }
 
     private fun storeSelection(item: Restaurant) {
@@ -76,9 +79,10 @@ class RestaurantsViewModel(
 
     private fun List<Restaurant>.restoreSelections() : List<Restaurant> {
         stateHandle.get<List<Int>?>(FAVORITES)?.let {selectedIds ->
-        val restaurantMap = this.associateBy { it.id }
+        val restaurantMap = this.associateBy { it.id }.toMutableMap()
         selectedIds.forEach { id ->
-            restaurantMap[id]?.isFavorite = true
+            val restaurant = restaurantMap[id] ?: return@forEach
+            restaurantMap[id] = restaurant.copy(isFavorite = true)
         }
         return restaurantMap.values.toList()
         }
@@ -102,5 +106,14 @@ class RestaurantsViewModel(
                 }
             }
         }
+    }
+
+    private suspend fun toggleFavoriteRestaurant(id: Int, oldValue: Boolean) = withContext(Dispatchers.IO) {
+        restaurantsDao.update(
+            partialRestaurant = PartialRestaurant(
+                id = id,
+                isFavorite = !oldValue
+            )
+        )
     }
 }
