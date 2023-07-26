@@ -14,9 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.ConnectException
 import java.net.UnknownHostException
 
-class RestaurantsViewModel(
-    private val stateHandle: SavedStateHandle
-) : ViewModel() {
+class RestaurantsViewModel() : ViewModel() {
 
     private var restInterface: RestaurantsApiService
     private var restaurantsDao = RestaurantsDb.getDaoInstance(
@@ -47,67 +45,47 @@ class RestaurantsViewModel(
 
     private fun getRestaurants() {
         viewModelScope.launch(errorHandler) {
-            val restaurants = getAllRestaurants()
-            state.value = restaurants.restoreSelections()
+            state.value = getAllRestaurants()
         }
     }
 
-    fun toggleFavorite(id: Int) {
-        val restaurants = state.value.toMutableList()
-        val itemIndex = restaurants.indexOfFirst { it.id == id }
-        val item = restaurants[itemIndex]
-        restaurants[itemIndex] = item.copy(isFavorite = !item.isFavorite)
-        storeSelection(restaurants[itemIndex])
-        state.value = restaurants
-        viewModelScope.launch {
-            toggleFavoriteRestaurant(id, item.isFavorite)
+    fun toggleFavorite(id: Int, oldValue: Boolean) {
+        viewModelScope.launch(errorHandler) {
+            val updatedRestaurants = toggleFavoriteRestaurant(id, oldValue)
+            state.value = updatedRestaurants
         }
-    }
-
-    private fun storeSelection(item: Restaurant) {
-        val savedToggled = stateHandle
-            .get<List<Int>?>(FAVORITES)
-            .orEmpty().toMutableList()
-        if (item.isFavorite) savedToggled.add(item.id)
-        else savedToggled.remove(item.id)
-        stateHandle[FAVORITES] = savedToggled
-    }
-
-    companion object {
-        const val FAVORITES = "favorites"
-    }
-
-    private fun List<Restaurant>.restoreSelections() : List<Restaurant> {
-        stateHandle.get<List<Int>?>(FAVORITES)?.let {selectedIds ->
-        val restaurantMap = this.associateBy { it.id }.toMutableMap()
-        selectedIds.forEach { id ->
-            val restaurant = restaurantMap[id] ?: return@forEach
-            restaurantMap[id] = restaurant.copy(isFavorite = true)
-        }
-        return restaurantMap.values.toList()
-        }
-        return this
     }
 
     private suspend fun getAllRestaurants() : List<Restaurant> {
         return withContext(Dispatchers.IO) {
             try {
-                val restaurants = restInterface.getRestaurants()
-                restaurantsDao.addAll(restaurants)
-                return@withContext restaurants
+                refreshCache()
             } catch (e: Exception) {
                 when (e) {
                     is UnknownHostException,
                     is ConnectException,
                     is HttpException -> {
-                        restaurantsDao.getAll()
+                        if (restaurantsDao.getAll().isEmpty()) throw Exception("Something is wrong." +
+                                "We have no data.")
                     }
                     else -> throw e
                 }
             }
+            return@withContext restaurantsDao.getAll()
         }
     }
 
+    private suspend fun refreshCache() {
+        val remoteRestaurants = restInterface.getRestaurants()
+        val favoriteRestaurants = restaurantsDao.getAllFavorited()
+
+        restaurantsDao.addAll(remoteRestaurants)
+        restaurantsDao.updateAll(
+            favoriteRestaurants.map {
+                PartialRestaurant(it.id, true)
+            }
+        )
+    }
     private suspend fun toggleFavoriteRestaurant(id: Int, oldValue: Boolean) = withContext(Dispatchers.IO) {
         restaurantsDao.update(
             partialRestaurant = PartialRestaurant(
@@ -115,5 +93,6 @@ class RestaurantsViewModel(
                 isFavorite = !oldValue
             )
         )
+        restaurantsDao.getAll()
     }
 }
