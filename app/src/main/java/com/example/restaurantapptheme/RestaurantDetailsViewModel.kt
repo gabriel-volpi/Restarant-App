@@ -34,7 +34,6 @@ class RestaurantDetailsViewModel(
             state.value = restaurant
         }
 
-
     }
 
     private suspend fun getRemoteRestaurant(id: Int): Restaurant {
