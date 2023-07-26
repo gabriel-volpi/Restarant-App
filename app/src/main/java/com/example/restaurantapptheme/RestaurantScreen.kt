@@ -1,11 +1,9 @@
 package com.example.restaurantapptheme
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -13,9 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,22 +26,30 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun RestaurantsScreen(
     onItemClick: (id: Int) -> Unit = {}
 ) {
-
     val viewModel: RestaurantsViewModel = viewModel()
+    val restaurants = viewModel.state.value
+    val isLoading = restaurants.isEmpty()
 
-    LazyColumn(
-        contentPadding = PaddingValues(
-            vertical = 8.dp,
-            horizontal = 8.dp
-        )
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
-        items(viewModel.state.value) { restaurant ->
-            RestaurantItem(
-                item = restaurant,
-                onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
-                onItemClick = { id -> onItemClick(id) }
-            )
+        LazyColumn(
+            modifier = Modifier.background(color = Color.Gray),
+            contentPadding = PaddingValues(
+                vertical = 8.dp,
+                horizontal = 8.dp
+            ),
+        ) {
+            items(restaurants) { restaurant ->
+                RestaurantItem(
+                    item = restaurant,
+                    onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
+                    onItemClick = { id -> onItemClick(id) }
+                )
+            }
         }
+        if (isLoading) CircularProgressIndicator()
     }
 }
 
@@ -51,9 +61,9 @@ fun RestaurantItem(
 ) {
 
     val icon = if(item.isFavorite)
-        Icons.Filled.Favorite
+        Icons.Rounded.Favorite
     else
-        Icons.Filled.FavoriteBorder
+        Icons.Rounded.FavoriteBorder
 
     Card(
         elevation = 4.dp,
