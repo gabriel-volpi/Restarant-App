@@ -27,29 +27,32 @@ fun RestaurantsScreen(
     onItemClick: (id: Int) -> Unit = {}
 ) {
     val viewModel: RestaurantsViewModel = viewModel()
-    val restaurants = viewModel.state.value
-    val isLoading = restaurants.isEmpty()
+    val state = viewModel.state.value
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            modifier = Modifier.background(color = Color.Gray),
-            contentPadding = PaddingValues(
-                vertical = 8.dp,
-                horizontal = 8.dp
-            ),
-        ) {
-            items(restaurants) { restaurant ->
-                RestaurantItem(
-                    item = restaurant,
-                    onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
-                    onItemClick = { id -> onItemClick(id) }
-                )
+
+        if (state.isLoading) CircularProgressIndicator()
+        else if (state.error != null) Text(state.error)
+        else {
+            LazyColumn(
+                modifier = Modifier.background(color = Color.Gray),
+                contentPadding = PaddingValues(
+                    vertical = 8.dp,
+                    horizontal = 8.dp
+                ),
+            ) {
+                items(state.restaurants) { restaurant ->
+                    RestaurantItem(
+                        item = restaurant,
+                        onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
+                        onItemClick = { id -> onItemClick(id) }
+                    )
+                }
             }
         }
-        if (isLoading) CircularProgressIndicator()
     }
 }
 

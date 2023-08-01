@@ -1,7 +1,6 @@
 package com.example.restaurantapptheme
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -21,10 +20,19 @@ class RestaurantsViewModel() : ViewModel() {
         RestaurantsApplication.getAppContext()
     )
 
-    val state = mutableStateOf(emptyList<Restaurant>())
+    val state = mutableStateOf(
+        RestaurantScreenState(
+            restaurants = listOf(),
+            isLoading = true
+        )
+    )
 
     private val errorHandler = CoroutineExceptionHandler { _,exception ->
         exception.printStackTrace()
+        state.value = state.value.copy(
+            error = exception.message,
+            isLoading = false
+        )
     }
 
 
@@ -45,14 +53,18 @@ class RestaurantsViewModel() : ViewModel() {
 
     private fun getRestaurants() {
         viewModelScope.launch(errorHandler) {
-            state.value = getAllRestaurants()
+            val restaurants = getAllRestaurants()
+            state.value = state.value.copy(
+                restaurants = restaurants,
+                isLoading = false
+            )
         }
     }
 
     fun toggleFavorite(id: Int, oldValue: Boolean) {
         viewModelScope.launch(errorHandler) {
             val updatedRestaurants = toggleFavoriteRestaurant(id, oldValue)
-            state.value = updatedRestaurants
+            state.value = state.value.copy(restaurants = updatedRestaurants)
         }
     }
 
