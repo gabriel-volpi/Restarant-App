@@ -1,4 +1,4 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.data.local
 
 import android.content.Context
 import androidx.room.Database

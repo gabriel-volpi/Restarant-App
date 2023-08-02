@@ -1,5 +1,11 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.data
 
+import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import com.example.restaurantapptheme.RestaurantsApplication
+import com.example.restaurantapptheme.restaurants.data.local.LocalRestaurant
+import com.example.restaurantapptheme.restaurants.data.local.PartialLocalRestaurant
+import com.example.restaurantapptheme.restaurants.data.local.RestaurantsDb
+import com.example.restaurantapptheme.restaurants.data.remote.RestaurantsApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

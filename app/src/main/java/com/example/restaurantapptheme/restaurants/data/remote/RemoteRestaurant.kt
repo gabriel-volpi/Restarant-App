@@ -1,4 +1,4 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.data.remote
 
 import com.google.gson.annotations.SerializedName
 

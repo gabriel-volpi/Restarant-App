@@ -1,9 +1,11 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.presentation.details
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.restaurantapptheme.restaurants.data.remote.RestaurantsApiService
+import com.example.restaurantapptheme.restaurants.domain.Restaurant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

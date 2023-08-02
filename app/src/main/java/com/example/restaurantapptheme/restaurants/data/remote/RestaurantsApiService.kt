@@ -1,4 +1,4 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.data.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,9 +1,12 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.presentation.list
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.restaurantapptheme.restaurants.data.RestaurantsRepository
+import com.example.restaurantapptheme.restaurants.domain.GetInitialRestaurantsUseCase
+import com.example.restaurantapptheme.restaurants.domain.ToggleRestaurantUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 

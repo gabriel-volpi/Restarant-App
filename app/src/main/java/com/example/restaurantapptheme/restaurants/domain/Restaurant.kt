@@ -1,4 +1,4 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.domain
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

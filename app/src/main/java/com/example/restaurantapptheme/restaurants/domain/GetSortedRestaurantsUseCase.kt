@@ -1,4 +1,6 @@
-package com.example.restaurantapptheme
+package com.example.restaurantapptheme.restaurants.domain
+
+import com.example.restaurantapptheme.restaurants.data.RestaurantsRepository
 
 class GetSortedRestaurantsUseCase {
 
