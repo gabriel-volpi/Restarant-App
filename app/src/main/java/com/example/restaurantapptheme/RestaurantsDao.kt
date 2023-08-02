@@ -10,17 +10,17 @@ import androidx.room.Update
 interface RestaurantsDao {
 
     @Query("SELECT * FROM restaurants")
-    suspend fun getAll(): List<Restaurant>
+    suspend fun getAll(): List<LocalRestaurant>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAll(restaurants: List<Restaurant>)
+    suspend fun addAll(restaurants: List<LocalRestaurant>)
 
-    @Update(entity = Restaurant::class)
-    suspend fun update(partialRestaurant: PartialRestaurant)
+    @Update(entity = LocalRestaurant::class)
+    suspend fun update(partialRestaurant: PartialLocalRestaurant)
 
-    @Update(entity = Restaurant::class)
-    suspend fun updateAll(partialRestaurants: List<PartialRestaurant>)
+    @Update(entity = LocalRestaurant::class)
+    suspend fun updateAll(partialRestaurants: List<PartialLocalRestaurant>)
 
     @Query("SELECT * FROM restaurants WHERE is_favorite = 1")
-    suspend fun getAllFavorited(): List<Restaurant>
+    suspend fun getAllFavorited(): List<LocalRestaurant>
 }

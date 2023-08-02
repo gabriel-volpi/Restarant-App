@@ -1,13 +1,12 @@
 package com.example.restaurantapptheme
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class Restaurant(
+data class RemoteRestaurant(
+    @SerializedName("r_id")
     val id: Int,
+    @SerializedName("r_title")
     val title: String,
+    @SerializedName("r_description")
     val description: String,
-    val isFavorite: Boolean = false
 )

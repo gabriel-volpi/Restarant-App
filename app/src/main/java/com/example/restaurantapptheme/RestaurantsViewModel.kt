@@ -11,7 +11,7 @@ class RestaurantsViewModel() : ViewModel() {
 
     private val repository = RestaurantsRepository()
 
-    private val getRestaurantsUseCase = GetRestaurantsUseCase()
+    private val getRestaurantsUseCase = GetInitialRestaurantsUseCase()
     private val toggleRestaurantUseCase = ToggleRestaurantUseCase()
 
     private val _state = mutableStateOf(

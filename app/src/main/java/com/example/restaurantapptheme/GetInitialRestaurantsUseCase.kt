@@ -1,16 +1,13 @@
 package com.example.restaurantapptheme
 
-class ToggleRestaurantUseCase {
+class GetInitialRestaurantsUseCase {
 
     private val repository: RestaurantsRepository = RestaurantsRepository()
     private val getSortedRestaurantsUseCase = GetSortedRestaurantsUseCase()
 
-    suspend operator fun invoke(
-        id: Int,
-        oldValue: Boolean
-    ): List<Restaurant> {
-        val newFav = oldValue.not()
-        repository.toggleFavoriteRestaurant(id, newFav)
+    suspend operator fun invoke(): List<Restaurant> {
+        repository.loadRestaurants()
         return getSortedRestaurantsUseCase()
     }
+
 }
