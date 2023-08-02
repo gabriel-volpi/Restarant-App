@@ -56,8 +56,7 @@ private fun RestaurantApp() {
             deepLinks = listOf(navDeepLink {
                 uriPattern = "www.restaurantsapp.details.com/{restaurant_id}"
             })
-        ) { navStackEntry ->
-            val id = navStackEntry.arguments?.getInt("restaurant_id")
+        ) {
             val viewModel: RestaurantDetailsViewModel = viewModel()
 
             RestaurantDetailsScreen(viewModel.state.value)
