@@ -11,15 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.restaurantapptheme.restaurants.domain.Restaurant
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantDetails
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantIcon
 
 @Composable
-fun RestaurantDetailsScreen() {
-    val viewModel: RestaurantDetailsViewModel = viewModel()
-    val item = viewModel.state.value
-
-    if (item != null) {
+fun RestaurantDetailsScreen(
+    state: Restaurant?
+) {
+    if (state != null) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -34,8 +34,8 @@ fun RestaurantDetailsScreen() {
                 )
             )
             RestaurantDetails(
-                title = item.title,
-                description = item.description,
+                title = state.title,
+                description = state.description,
                 modifier = Modifier.padding(bottom = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             )
