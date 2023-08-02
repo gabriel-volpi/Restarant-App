@@ -33,26 +33,23 @@ fun RestaurantsScreen(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-
-        if (state.isLoading) CircularProgressIndicator()
-        else if (state.error != null) Text(state.error)
-        else {
-            LazyColumn(
-                modifier = Modifier.background(color = Color.Gray),
-                contentPadding = PaddingValues(
-                    vertical = 8.dp,
-                    horizontal = 8.dp
-                ),
-            ) {
-                items(state.restaurants) { restaurant ->
-                    RestaurantItem(
-                        item = restaurant,
-                        onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
-                        onItemClick = { id -> onItemClick(id) }
-                    )
-                }
+        LazyColumn(
+            modifier = Modifier.background(color = Color.Gray),
+            contentPadding = PaddingValues(
+                vertical = 8.dp,
+                horizontal = 8.dp
+            ),
+        ) {
+            items(state.restaurants) { restaurant ->
+                RestaurantItem(
+                    item = restaurant,
+                    onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
+                    onItemClick = { id -> onItemClick(id) }
+                )
             }
         }
+        if (state.isLoading) CircularProgressIndicator()
+        if (state.error != null) Text(state.error)
     }
 }
 
