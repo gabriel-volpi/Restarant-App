@@ -6,29 +6,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.restaurantapptheme.restaurants.data.remote.RestaurantsApiService
 import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class RestaurantDetailsViewModel(
-    private val stateHandle: SavedStateHandle
+@HiltViewModel
+class RestaurantDetailsViewModel @Inject constructor(
+    private val stateHandle: SavedStateHandle,
+    private val restInterface: RestaurantsApiService
 ) : ViewModel() {
 
-    private var restInterface: RestaurantsApiService
     val state = mutableStateOf<Restaurant?>(null)
 
     init {
-        val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(
-                GsonConverterFactory.create()
-            ).baseUrl(
-                "https://restaurantappbe-default-rtdb.firebaseio.com/"
-            ).build()
-
-        restInterface = retrofit.create(RestaurantsApiService::class.java)
-
         val id = stateHandle.get<Int>("restaurant_id") ?: 0
 
         viewModelScope.launch {

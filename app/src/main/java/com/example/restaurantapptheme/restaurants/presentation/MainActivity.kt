@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,7 +19,9 @@ import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantSc
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantsScreen
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantsViewModel
 import com.example.restaurantapptheme.ui.theme.RestaurantAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun RestaurantApp() {
+
     val navController = rememberNavController()
 
     NavHost(
@@ -39,7 +43,7 @@ private fun RestaurantApp() {
         startDestination = "restaurants"
     ) {
         composable(route = "restaurants") {
-            val viewModel: RestaurantsViewModel = viewModel()
+            val viewModel: RestaurantsViewModel = hiltViewModel()
             RestaurantsScreen(
                 state = viewModel.state.value,
                 onItemClick = { id ->
@@ -57,7 +61,7 @@ private fun RestaurantApp() {
                 uriPattern = "www.restaurantsapp.details.com/{restaurant_id}"
             })
         ) {
-            val viewModel: RestaurantDetailsViewModel = viewModel()
+            val viewModel: RestaurantDetailsViewModel = hiltViewModel()
 
             RestaurantDetailsScreen(viewModel.state.value)
         }

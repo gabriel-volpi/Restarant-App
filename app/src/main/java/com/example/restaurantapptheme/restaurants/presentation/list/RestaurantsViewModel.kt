@@ -4,18 +4,20 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Insert
 import com.example.restaurantapptheme.restaurants.data.RestaurantsRepository
 import com.example.restaurantapptheme.restaurants.domain.GetInitialRestaurantsUseCase
 import com.example.restaurantapptheme.restaurants.domain.ToggleRestaurantUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RestaurantsViewModel() : ViewModel() {
-
-    private val repository = RestaurantsRepository()
-
-    private val getRestaurantsUseCase = GetInitialRestaurantsUseCase()
-    private val toggleRestaurantUseCase = ToggleRestaurantUseCase()
+@HiltViewModel
+class RestaurantsViewModel @Inject constructor(
+    private val getRestaurantsUseCase: GetInitialRestaurantsUseCase,
+    private val toggleRestaurantUseCase: ToggleRestaurantUseCase
+) : ViewModel() {
 
     private val _state = mutableStateOf(
         RestaurantScreenState(
