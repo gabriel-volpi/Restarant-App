@@ -14,6 +14,9 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private const val ERROR_MESSAGE = "Something is wrong. We have no data. Please check yout internet" +
+        " connection"
+
 @Singleton
 class RestaurantsRepository @Inject constructor(
     private val restInterface: RestaurantsApiService,
@@ -30,8 +33,7 @@ class RestaurantsRepository @Inject constructor(
                     is UnknownHostException,
                     is ConnectException,
                     is HttpException -> {
-                        if (restaurantsDao.getAll().isEmpty()) throw Exception("Something is wrong." +
-                                "We have no data.")
+                        if (restaurantsDao.getAll().isEmpty()) throw Exception(ERROR_MESSAGE)
                     }
                     else -> throw e
                 }

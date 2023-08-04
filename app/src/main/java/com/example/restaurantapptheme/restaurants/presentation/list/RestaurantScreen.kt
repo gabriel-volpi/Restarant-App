@@ -10,15 +10,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
@@ -35,27 +38,58 @@ fun RestaurantsScreen(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            modifier = Modifier.background(color = Color.Gray),
-            contentPadding = PaddingValues(
-                vertical = 8.dp,
-                horizontal = 8.dp
-            ),
-        ) {
-            items(state.restaurants) { restaurant ->
-                RestaurantItem(
-                    item = restaurant,
-                    onFavoriteClick = { id, oldValue -> onFavoriteClick(id, oldValue) },
-                    onItemClick = { id -> onItemClick(id) }
-                )
-            }
-        }
         if (state.isLoading) CircularProgressIndicator(
             modifier = Modifier.semantics {
                 this.contentDescription = Description.RESTAURANT_LOADING
             }
         )
-        if (state.error != null) Text(state.error)
+        else if (state.error != null) ErrorStateScreen(state.error)
+        else {
+            LazyColumn(
+                modifier = Modifier.background(color = Color.Gray),
+                contentPadding = PaddingValues(
+                    vertical = 8.dp,
+                    horizontal = 8.dp
+                ),
+            ) {
+                items(state.restaurants) { restaurant ->
+                    RestaurantItem(
+                        item = restaurant,
+                        onFavoriteClick = { id, oldValue -> onFavoriteClick(id, oldValue) },
+                        onItemClick = { id -> onItemClick(id) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ErrorStateScreen(
+    errorMessage: String
+) {
+    Card(
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Warning icon",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(60.dp)
+            )
+            Text(
+                text = errorMessage,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

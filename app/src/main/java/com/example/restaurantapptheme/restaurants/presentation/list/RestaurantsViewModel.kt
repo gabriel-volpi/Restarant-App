@@ -20,7 +20,7 @@ class RestaurantsViewModel @Inject constructor(
     @MainDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(
+    private var _state = mutableStateOf(
         RestaurantScreenState(
             restaurants = listOf(),
             isLoading = true
