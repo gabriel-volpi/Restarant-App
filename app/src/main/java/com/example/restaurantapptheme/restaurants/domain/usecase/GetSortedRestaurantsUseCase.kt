@@ -1,6 +1,7 @@
-package com.example.restaurantapptheme.restaurants.domain
+package com.example.restaurantapptheme.restaurants.domain.usecase
 
 import com.example.restaurantapptheme.restaurants.data.RestaurantsRepository
+import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
 import javax.inject.Inject
 
 class GetSortedRestaurantsUseCase @Inject constructor(

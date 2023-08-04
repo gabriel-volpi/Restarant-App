@@ -11,6 +11,6 @@ class FakeApiService : RestaurantsApiService {
     }
 
     override suspend fun getRestaurant(id: Int): Map<String, RemoteRestaurant> {
-        TODO("Not yet implemented")
+        return mapOf("0" to DummyContent.getRemoteRestaurants().first())
     }
 }

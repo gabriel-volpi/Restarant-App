@@ -4,11 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Insert
-import com.example.restaurantapptheme.restaurants.data.RestaurantsRepository
 import com.example.restaurantapptheme.restaurants.data.di.MainDispatcher
-import com.example.restaurantapptheme.restaurants.domain.GetInitialRestaurantsUseCase
-import com.example.restaurantapptheme.restaurants.domain.ToggleRestaurantUseCase
+import com.example.restaurantapptheme.restaurants.domain.usecase.GetInitialRestaurantsUseCase
+import com.example.restaurantapptheme.restaurants.domain.usecase.ToggleRestaurantUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler

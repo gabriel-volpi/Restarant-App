@@ -1,13 +1,12 @@
 package com.example.restaurantapptheme.restaurants.data
 
 import com.example.restaurantapptheme.restaurants.data.di.IoDispatcher
-import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
 import com.example.restaurantapptheme.restaurants.data.local.LocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.PartialLocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.RestaurantsDao
 import com.example.restaurantapptheme.restaurants.data.remote.RestaurantsApiService
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -85,5 +84,4 @@ class RestaurantsRepository @Inject constructor(
             }
         }
     }
-
 }

@@ -10,8 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantDetails
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantIcon
 

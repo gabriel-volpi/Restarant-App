@@ -21,7 +21,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
 import com.example.restaurantapptheme.restaurants.presentation.Description
 import com.example.restaurantapptheme.ui.theme.RestaurantAppTheme
 

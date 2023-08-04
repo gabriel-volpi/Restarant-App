@@ -3,7 +3,6 @@ package com.example.restaurantapptheme
 import com.example.restaurantapptheme.restaurants.data.local.LocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.PartialLocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.RestaurantsDao
-import com.example.restaurantapptheme.restaurants.domain.Restaurant
 import kotlinx.coroutines.delay
 
 class FakeRoomDao : RestaurantsDao {
