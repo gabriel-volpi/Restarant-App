@@ -57,9 +57,9 @@ private fun RestaurantApp() {
         composable(
             route = "restaurants/{restaurant_id}",
             arguments = listOf(navArgument("restaurant_id") { type = NavType.IntType }),
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "www.restaurantsapp.details.com/{restaurant_id}"
-            })
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "www.restaurantsapp.details.com/{restaurant_id}" }
+            )
         ) {
             val viewModel: RestaurantDetailsViewModel = hiltViewModel()
 

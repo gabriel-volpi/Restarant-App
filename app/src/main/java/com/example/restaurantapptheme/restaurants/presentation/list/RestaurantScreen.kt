@@ -17,9 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.restaurantapptheme.restaurants.domain.Restaurant
+import com.example.restaurantapptheme.restaurants.presentation.Description
 import com.example.restaurantapptheme.ui.theme.RestaurantAppTheme
 
 @Composable
@@ -47,7 +50,11 @@ fun RestaurantsScreen(
                 )
             }
         }
-        if (state.isLoading) CircularProgressIndicator()
+        if (state.isLoading) CircularProgressIndicator(
+            modifier = Modifier.semantics {
+                this.contentDescription = Description.RESTAURANT_LOADING
+            }
+        )
         if (state.error != null) Text(state.error)
     }
 }

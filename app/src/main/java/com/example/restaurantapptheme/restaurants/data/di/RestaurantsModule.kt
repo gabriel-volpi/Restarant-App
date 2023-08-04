@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RestaurantsModule {
-
     @Provides
     fun provideRoomDao(database: RestaurantsDb): RestaurantsDao {
         return database.dao

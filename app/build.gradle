@@ -82,4 +82,9 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.40.5"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
+    //capítulo sobre testes unitários e testes de UI
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    //biblioteca para testes com corroutines
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
 }

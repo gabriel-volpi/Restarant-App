@@ -1,10 +1,12 @@
 package com.example.restaurantapptheme.restaurants.data
 
+import com.example.restaurantapptheme.restaurants.data.di.IoDispatcher
 import com.example.restaurantapptheme.restaurants.domain.Restaurant
 import com.example.restaurantapptheme.restaurants.data.local.LocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.PartialLocalRestaurant
 import com.example.restaurantapptheme.restaurants.data.local.RestaurantsDao
 import com.example.restaurantapptheme.restaurants.data.remote.RestaurantsApiService
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -16,11 +18,12 @@ import javax.inject.Singleton
 @Singleton
 class RestaurantsRepository @Inject constructor(
     private val restInterface: RestaurantsApiService,
-    private val restaurantsDao: RestaurantsDao
+    private val restaurantsDao: RestaurantsDao,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend fun loadRestaurants() {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             try {
                 refreshCache()
             } catch (e: Exception) {
@@ -61,8 +64,7 @@ class RestaurantsRepository @Inject constructor(
         )
     }
 
-    suspend fun toggleFavoriteRestaurant(id: Int, value: Boolean) = withContext(
-        Dispatchers.IO) {
+    suspend fun toggleFavoriteRestaurant(id: Int, value: Boolean) = withContext(dispatcher) {
         restaurantsDao.update(
             partialRestaurant = PartialLocalRestaurant(
                 id = id,
@@ -72,7 +74,7 @@ class RestaurantsRepository @Inject constructor(
     }
 
     suspend fun getRestaurants() : List<Restaurant> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             return@withContext restaurantsDao.getAll().map {
                 Restaurant(
                     id = it.id,
