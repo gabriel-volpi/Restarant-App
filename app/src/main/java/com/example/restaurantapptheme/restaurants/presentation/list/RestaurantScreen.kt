@@ -1,5 +1,6 @@
 package com.example.restaurantapptheme.restaurants.presentation.list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,18 +33,22 @@ import com.example.restaurantapptheme.ui.theme.RestaurantAppTheme
 fun RestaurantsScreen(
     state: RestaurantScreenState,
     onItemClick: (id: Int) -> Unit = {},
-    onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit
+    onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit,
+    onTryAgainClick: () -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.isLoading) CircularProgressIndicator(
-            modifier = Modifier.semantics {
-                this.contentDescription = Description.RESTAURANT_LOADING
-            }
-        )
-        else if (state.error != null) ErrorStateScreen(state.error)
+        if (state.isLoading){
+            LoadingStateScreen()
+        }
+        else if (state.error != null){
+            ErrorStateScreen(
+                errorMessage = state.error,
+                onTryAgainClick = { onTryAgainClick() }
+            )
+        }
         else {
             LazyColumn(
                 modifier = Modifier.background(color = Color.Gray),
@@ -65,13 +70,39 @@ fun RestaurantsScreen(
 }
 
 @Composable
-fun ErrorStateScreen(
-    errorMessage: String
-) {
+fun LoadingStateScreen() {
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.semantics {
+                    this.contentDescription = Description.RESTAURANT_LOADING
+                }
+            )
+            Text(
+                text = "Loading...",
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun ErrorStateScreen(
+    errorMessage: String,
+    onTryAgainClick: () -> Unit
+) {
+    Card(
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.padding(16.dp),
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -89,6 +120,17 @@ fun ErrorStateScreen(
                 text = errorMessage,
                 textAlign = TextAlign.Center
             )
+
+            TextButton(
+                onClick = { onTryAgainClick() },
+                shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(1.dp, Color.Black)
+            ) {
+                Text(
+                    text ="Try Again",
+                    color = Color.Black
+                )
+            }
         }
     }
 }
@@ -176,7 +218,8 @@ fun DefaultPreview() {
         RestaurantsScreen(
             state = RestaurantScreenState(listOf(), true),
             onItemClick = {},
-            onFavoriteClick = { _, _ -> }
+            onFavoriteClick = { _, _ -> },
+            onTryAgainClick = {}
         )
     }
 }

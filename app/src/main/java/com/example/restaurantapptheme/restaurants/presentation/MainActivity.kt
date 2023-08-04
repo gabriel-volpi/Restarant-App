@@ -51,6 +51,10 @@ private fun RestaurantApp() {
                 },
                 onFavoriteClick = { id, oldValue ->
                     viewModel.toggleFavorite(id, oldValue)
+                },
+                onTryAgainClick = {
+                    viewModel.getRestaurants()
+                    navController.navigate("restaurants")
                 }
             )
         }
@@ -75,7 +79,8 @@ fun DefaultPreview() {
         RestaurantsScreen(
             state = RestaurantScreenState(listOf(), true),
             onItemClick = {},
-            onFavoriteClick = { _, _ -> }
+            onFavoriteClick = { _, _ -> },
+            onTryAgainClick = {}
         )
     }
 }

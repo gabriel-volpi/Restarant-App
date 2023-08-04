@@ -40,7 +40,7 @@ class RestaurantsViewModel @Inject constructor(
     init {
         getRestaurants()
     }
-    private fun getRestaurants() {
+    fun getRestaurants() {
         viewModelScope.launch(errorHandler + dispatcher) {
             val restaurants = getRestaurantsUseCase()
             _state.value = _state.value.copy(
