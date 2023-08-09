@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.restaurantapptheme.restaurants.DummyContent
+import com.example.restaurantapptheme.restaurants.data.ERROR_MESSAGE
 import com.example.restaurantapptheme.restaurants.presentation.Description
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantScreenState
 import com.example.restaurantapptheme.restaurants.presentation.list.RestaurantsScreen
@@ -22,17 +23,15 @@ class RestaurantScreenTest {
     @Test
     fun initialState_isRendered() {
 
-        val state = RestaurantScreenState(
-            restaurants = emptyList(),
-            isLoading = true
-        )
+        val state = RestaurantScreenState.LoadingState
 
         testRule.setContent {
             RestaurantAppTheme {
                 RestaurantsScreen(
                     state = state,
                     onFavoriteClick = { _: Int, _:Boolean -> },
-                    onItemClick = {}
+                    onItemClick = {},
+                    onTryAgainClick = {}
                 )
             }
         }
@@ -45,17 +44,15 @@ class RestaurantScreenTest {
     fun stateWithContent_isRendered() {
 
         val restaurants = DummyContent.getDomainRestaurants()
-        val state = RestaurantScreenState(
-            restaurants = restaurants,
-            isLoading = false
-        )
+        val state = RestaurantScreenState.IdleState(restaurants)
 
         testRule.setContent {
             RestaurantAppTheme {
                 RestaurantsScreen(
                     state = state,
                     onFavoriteClick = { _: Int, _:Boolean -> },
-                    onItemClick = {}
+                    onItemClick = {},
+                    onTryAgainClick = {}
                 )
             }
         }
@@ -67,23 +64,20 @@ class RestaurantScreenTest {
 
     @Test
     fun errorState_isRendered() {
-        val state = RestaurantScreenState(
-            restaurants = emptyList(),
-            isLoading = false,
-            error = "error message"
-        )
+        val state = RestaurantScreenState.ErrorState
 
         testRule.setContent {
             RestaurantAppTheme {
                 RestaurantsScreen(
                     state = state,
                     onFavoriteClick = { _: Int, _:Boolean -> },
-                    onItemClick = {}
+                    onItemClick = {},
+                    onTryAgainClick = {}
                 )
             }
         }
 
-        testRule.onNodeWithText("error message").assertIsDisplayed()
+        testRule.onNodeWithText(ERROR_MESSAGE).assertIsDisplayed()
         testRule.onNodeWithContentDescription(Description.RESTAURANT_LOADING).assertDoesNotExist()
     }
 
@@ -91,10 +85,7 @@ class RestaurantScreenTest {
     fun stateWithContent_clickOnItem_isRegistered() {
         val restaurants = DummyContent.getDomainRestaurants()
         val targetRestaurant = restaurants[0]
-        val state = RestaurantScreenState(
-            restaurants = restaurants,
-            isLoading = false
-        )
+        val state = RestaurantScreenState.IdleState(restaurants)
 
         testRule.setContent {
             RestaurantAppTheme {
@@ -103,12 +94,12 @@ class RestaurantScreenTest {
                     onFavoriteClick = { _: Int, _:Boolean -> },
                     onItemClick = { id ->
                         assert(id == targetRestaurant.id)
-                    }
+                    },
+                    onTryAgainClick = {}
                 )
             }
         }
 
         testRule.onNodeWithText(targetRestaurant.title).performClick()
-
     }
 }

@@ -14,7 +14,7 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val ERROR_MESSAGE = "Something is wrong. We have no data. Please check yout internet" +
+const val ERROR_MESSAGE = "Something is wrong. We have no data. Please check yout internet" +
         " connection"
 
 @Singleton

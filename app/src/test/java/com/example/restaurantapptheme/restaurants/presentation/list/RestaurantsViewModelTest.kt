@@ -24,13 +24,8 @@ class RestaurantsViewModelTest {
     fun initialState_isProduced() = scope.runTest {
         val viewModel = getViewModel()
         val initialState = viewModel.state.value
-        assert(
-            initialState == RestaurantScreenState(
-                restaurants = emptyList(),
-                isLoading = true,
-                error = null
-            )
-        )
+
+        assert(initialState == RestaurantScreenState.LoadingState)
     }
 
     @Test
@@ -39,13 +34,8 @@ class RestaurantsViewModelTest {
         advanceUntilIdle()
         val currentState = viewModel.state.value
         val expectedRestaurants = DummyContent.getDomainRestaurants().sortedBy { it.title }
-        assert(
-            currentState == RestaurantScreenState(
-                restaurants = expectedRestaurants,
-                isLoading = false,
-                error = null
-            )
-        )
+
+        assert(currentState == RestaurantScreenState.IdleState(expectedRestaurants))
     }
 
 

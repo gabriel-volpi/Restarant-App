@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,8 +46,9 @@ private fun RestaurantApp() {
     ) {
         composable(route = "restaurants") {
             val viewModel: RestaurantsViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsState()
             RestaurantsScreen(
-                state = viewModel.state.value,
+                state = state,
                 onItemClick = { id ->
                     navController.navigate("restaurants/$id")
                 },
@@ -54,7 +57,6 @@ private fun RestaurantApp() {
                 },
                 onTryAgainClick = {
                     viewModel.getRestaurants()
-                    navController.navigate("restaurants")
                 }
             )
         }
@@ -77,7 +79,7 @@ private fun RestaurantApp() {
 fun DefaultPreview() {
     RestaurantAppTheme {
         RestaurantsScreen(
-            state = RestaurantScreenState(listOf(), true),
+            state = RestaurantScreenState.ErrorState,
             onItemClick = {},
             onFavoriteClick = { _, _ -> },
             onTryAgainClick = {}

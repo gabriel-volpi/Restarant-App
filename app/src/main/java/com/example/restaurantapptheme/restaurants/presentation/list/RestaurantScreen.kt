@@ -25,6 +25,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.restaurantapptheme.restaurants.data.ERROR_MESSAGE
 import com.example.restaurantapptheme.restaurants.domain.model.Restaurant
 import com.example.restaurantapptheme.restaurants.presentation.Description
 import com.example.restaurantapptheme.ui.theme.RestaurantAppTheme
@@ -40,31 +41,36 @@ fun RestaurantsScreen(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.isLoading){
-            LoadingStateScreen()
-        }
-        else if (state.error != null){
-            ErrorStateScreen(
-                errorMessage = state.error,
+        when(state) {
+            is RestaurantScreenState.LoadingState -> LoadingStateScreen()
+            is RestaurantScreenState.ErrorState -> ErrorStateScreen(
+                errorMessage = ERROR_MESSAGE,
                 onTryAgainClick = { onTryAgainClick() }
             )
+            is RestaurantScreenState.IdleState -> IdleContent(onItemClick, onFavoriteClick, state)
         }
-        else {
-            LazyColumn(
-                modifier = Modifier.background(color = Color.Gray),
-                contentPadding = PaddingValues(
-                    vertical = 8.dp,
-                    horizontal = 8.dp
-                ),
-            ) {
-                items(state.restaurants) { restaurant ->
-                    RestaurantItem(
-                        item = restaurant,
-                        onFavoriteClick = { id, oldValue -> onFavoriteClick(id, oldValue) },
-                        onItemClick = { id -> onItemClick(id) }
-                    )
-                }
-            }
+    }
+}
+
+@Composable
+fun IdleContent(
+    onItemClick: (id: Int) -> Unit = {},
+    onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit,
+    state: RestaurantScreenState.IdleState,
+) {
+    LazyColumn(
+        modifier = Modifier.background(color = Color.Gray),
+        contentPadding = PaddingValues(
+            vertical = 8.dp,
+            horizontal = 8.dp
+        ),
+    ) {
+        items(state.restaurants) { restaurant ->
+            RestaurantItem(
+                item = restaurant,
+                onFavoriteClick = { id, oldValue -> onFavoriteClick(id, oldValue) },
+                onItemClick = { id -> onItemClick(id) }
+            )
         }
     }
 }
@@ -216,7 +222,7 @@ fun RestaurantDetails(
 fun DefaultPreview() {
     RestaurantAppTheme{
         RestaurantsScreen(
-            state = RestaurantScreenState(listOf(), true),
+            state = RestaurantScreenState.ErrorState,
             onItemClick = {},
             onFavoriteClick = { _, _ -> },
             onTryAgainClick = {}
