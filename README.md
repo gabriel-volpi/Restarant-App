@@ -43,3 +43,8 @@ Sinta-se à vontade para explorar o código-fonte, aprender com nossas implement
 
 # Evidência - "Error State"
 ![error_state_compressed](https://github.com/gabriel-volpi/Restarant-App/assets/77797748/f8fc3892-4ac5-4429-9b45-c11172bc4d86)
+
+# Evidência - "Recovering from error state to idle state"
+![recovering_from_error_state](https://github.com/gabriel-volpi/Restarant-App/assets/77797748/8430c2ef-ad27-4cfb-99be-2d7df7e9ce3e)
+
+
